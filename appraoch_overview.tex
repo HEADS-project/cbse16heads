@@ -244,7 +244,7 @@ Supporting a lower-level language (like C) where libraries are not available (or
 By default, the HEADS transformation framework generates standalone code that can be executed without any dependencies to HEADS tools and platforms. However, this code cannot easily be updated at runtime e.g. to substitute one component by another, though it is programmatically feasible to instantiate new components and connectors. In the HEADS Design language, components are indeed implementation units, in a way similar to Java classes. Wrapping each individual implementation unit in a deployable component having its own lifecycle at runtime would result in a large number of components that needs to be deployed and administrated at runtime. For example, in an implementation unit dealing with serial communication would typically be packed together with implementation units dealing with serialization/deserialization of messages in the same deploy unit. This way at runtime, the service operator would only need to deploy a single component responsible for serial communication, the (de)serialization aspect being hidden as an implementation detail. Figure \ref{fig:fig2} shows how HEADS implementation units can be wrapped into Heads deploy units.
 
 
-\begin{figure}[h]
+\begin{figure}[t]
 	\centering
 	\includegraphics[width=1\linewidth]{figures/fig2}
 	\caption[Heads implementation and deploy units integration]{Heads implementation and deploy units integration}
