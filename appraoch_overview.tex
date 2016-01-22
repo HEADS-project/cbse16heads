@@ -15,6 +15,8 @@ HEADS also intensively rely on generative techniques to produce C/C++, Java, Jav
 \item has few (ideally none) dependencies to any HEADS runtime libraries
 \end{itemize}
 
+The HEADS Design Language and Transformation Framework are available as an open-source projects on GitHub\footnote{https://github.com/SINTEF-9012/ThingML}.
+
 \subsection{HEADS Design Language}
 
 The ambition of the HEADS design language is to support the implementation and integration of the different parts of HD-services, including the integration of legacy and of-the-shelf components and libraries. The HEADS approach has a cost that comes as a consequence of this flexibility. At a certain abstraction level, all components interfaces need to be described in terms of the HEADS modeling language in order to allow for their integration in the system. However, it is important for any existing platform, library, framework or middleware to be usable without re-inventing, re-modeling or re-implementing it. In the design of the HEADS approach and code generation framework, a special attention is put to avoid introducing any accidental overhead beyond what is strictly necessary for the integration of the implementation artefacts. 
@@ -244,3 +246,5 @@ By default, the HEADS transformation framework generates standalone code that ca
 \end{figure}
 
 Once wrapped into deploy units, components can be manipulated by the HEADS Deployment Language and actually deployed on the HEADS runtime platform, which evolves the Kevoree platform~\cite{DBLP:conf/cbse/FouquetMFBPJ12} initially developed for Java in order to also support JavaScript and more recently, .NET. The HEADS Deployment Language provide a way to write scripts describing which components to instantiate, how to configure them (set values of parameters), and how to connect components through communication channels. A large set of components and channels is already available off the shelf. At deployment time, the script, describing the components and channels deployed on the different nodes of the system, will be sent to the different nodes, which will interpret this script and actually deploy the necessary components, etc.   
+
+The HEADS Deployment Language and Runtime platforms are available as a set of open-source projects on GitHub\footnote{https://github.com/dukeboard/kevoree\\https://github.com/kevoree/kevoree-js}.
