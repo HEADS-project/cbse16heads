@@ -16,7 +16,7 @@ The overall architecture of the eHealth system is depicted in Figure~\ref{fig:fi
 
 This particular HD-Service thus relies on an heterogeneous infrastructure composed from rather powerful 32-bit X86 and ARM processors with 1 GB RAM down to 8-bit AVR microcontroller running at 16 MHz (about 60 times slower) and embedding only 2.5 KB RAM (about 400 000 times less). It also integrates a variety of radio protocols such as WiFi, BlueTooth or Z-Wave. 
 
-\subsection{Detailed Architecture and Implementation of the Field Node}
+\subsection{Implementation of the Field Node}
 
 At design/implementation time, the Field Node is composed of 8 core components implementing the logic of the node, and 2 other components that allows the field node to push information to the gateway via MQTT. Each of the implementation component is available as: 
 \begin{itemize}
@@ -24,7 +24,7 @@ At design/implementation time, the Field Node is composed of 8 core components i
 \item A Platform-Specific Component (PSC), which describes the full behavior of a component including the access to hardware drivers and system APIs. 
 \end{itemize}
 
-For example, the PIC associated to the BLE component describes the following messages related to the status of the BLE connection: stateChange (st : String); discover (peripheral : String); scanStart (); scanStop (); startScanning (); stopScanning (); connect (peripheralId : String); disconnect (peripheralId : String); and discoverServices (peripheralId : String). Those messages are orchestrated in the BLE PSC by a state machine (see Figure \ref{fig:fig4}) interfacing with the "noble" JavaScript module to deal with low-level details related to BlueTooth. 
+For example, the PIC associated to the BLE component describes messages related to the status of the BLE connection, such as stateChange (st : String); discover (peripheral : String); scanStart (); scanStop (). Those messages are orchestrated in the BLE PSC by a state machine (see Figure \ref{fig:fig4}) interfacing with the "noble" JavaScript module to deal with low-level details related to BlueTooth. 
 
 \begin{figure}[t]
 	\centering
@@ -38,7 +38,7 @@ Overall, the Field Node is implemented with ~300 LoC for the PICs and ~1100 LoC 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.75\linewidth]{figures/fig5-b}
-	\caption{Field-Node component structure and HEADS deployment of Field-Node seen in Heads deployment model editor}
+	\caption{Field-Node component structure and actual Deployment}
 	\label{fig:fig5}
 \end{figure}
 

@@ -17,9 +17,9 @@ HEADS also intensively rely on generative techniques to produce C/C++, Java, Jav
 
 \subsection{HEADS Design Language}
 
-The ambition of the HEADS design language is to support the implementation and integration of the different parts of HD-services, including the integration of legacy and of-the-shelf components and libraries. The HEADS approach has a cost that comes as a consequence of this flexibility. At a certain abstraction level, all components interfaces need to be described in terms of the HEADS modelling language in order to allow for their integration in the system. However, it is important for any existing platform, library, framework or middleware to be usable without re-inventing, re-modelling or re-implementing it. In the design of the HEADS approach and code generation framework, a special attention is put to avoid introducing any accidental overhead beyond what is strictly necessary for the integration of the implementation artefacts. 
+The ambition of the HEADS design language is to support the implementation and integration of the different parts of HD-services, including the integration of legacy and of-the-shelf components and libraries. The HEADS approach has a cost that comes as a consequence of this flexibility. At a certain abstraction level, all components interfaces need to be described in terms of the HEADS modeling language in order to allow for their integration in the system. However, it is important for any existing platform, library, framework or middleware to be usable without re-inventing, re-modeling or re-implementing it. In the design of the HEADS approach and code generation framework, a special attention is put to avoid introducing any accidental overhead beyond what is strictly necessary for the integration of the implementation artefacts. 
 
-For the components developed from scratch or for which the target runtime environment might change, the HEADS design language provides with all the required expressiveness to fully specify the behaviour of a component in a platform independent way. Different code generators can then be used to produce code for different platforms (currently Java, JavaScript and C/C++). This is similar to typical Model-Driven Engineering platform-independent models with a set of code generators (or compilers) for different platforms. At the other end of the spectrum, for the integration of an existing component, the HEADS approach allow modelling only the required part of interface of the component and mapping to its public platform specific API. 
+For the components developed from scratch or for which the target runtime environment might change, the HEADS design language provides with all the required expressiveness to fully specify the behavior of a component in a platform independent way. Different code generators can then be used to produce code for different platforms (currently Java, JavaScript and C/C++). This is similar to typical Model-Driven Engineering platform-independent models with a set of code generators (or compilers) for different platforms. At the other end of the spectrum, for the integration of an existing component, the HEADS approach allow modeling only the required part of interface of the component and mapping to its public platform specific API. 
 
 This is similar to typical wrapping of external components and libraries such as for example Java Native Interface for Java to interact with a native library. The contribution of the HEADS approach is to give the flexibility to develop components which are neither fully platform independent nor direct wrapping around existing components but rather an arbitrary combination of existing libraries, platform features and application logic. In practice most of the components of a HD-service fall under this category and efficiently being able to integrate these different elements a key goal. The way the HEADS approach implements such capabilities is two-fold. First, a set of special constructs and actions are included in the HEADS action languages in order to seamlessly interleave platforms specific code and platform independent code. Second, the HEADS approach relies on a highly customizable code generation framework which can be tailored to specific target languages, middleware, operating systems, libraries and even build systems, as described in the next sub-section.
 
@@ -35,7 +35,7 @@ For example, a timer component would describe the following API:
 thing fragment TimerMsgs {  
   message start(delay : Integer); // Start the Timer 
   message cancel(); // Cancel the Timer  
-  message timeout(); // Notification that the timer has expired 
+  message timeout(); // Notification 
 } 
 thing fragment Timer includes TimerMsgs {  
   provided port timer {  
@@ -73,7 +73,7 @@ thing TimerJS includes Timer {
 } 
 \end{lstlisting}
 
-Basically, anytime a start message is received on the timer port, we first check that the delay is positive. If so, we call the start function, which is a simple wrapper around the native setTimeout function provided in JavaScript. Native code i.e. code that is directly expressed in the target language (here JavaScript) should be written between simple quotes. Native code can be interleaved with actions and expression of the HEADS Modelling Language. This way, the developer does not need to know how the generated code will look like to be able to wrap her library. No matter if the delay variable is renamed in the generated e.g. to avoid name conflict or if the action of sending the timeout actually implemented in a generated function called sendtimeoutOnTimer. She just can simply refer to the delay variable and send a message with no knowledge of the underlying implementation of those mechanisms. 
+Basically, anytime a start message is received on the timer port, we first check that the delay is positive. If so, we call the start function, which is a simple wrapper around the native setTimeout function provided in JavaScript. Native code i.e. code that is directly expressed in the target language (here JavaScript) should be written between simple quotes. Native code can be interleaved with actions and expression of the HEADS Modeling Language. This way, the developer does not need to know how the generated code will look like to be able to wrap her library. No matter if the delay variable is renamed in the generated e.g. to avoid name conflict or if the action of sending the timeout actually implemented in a generated function called sendtimeoutOnTimer. She just can simply refer to the delay variable and send a message with no knowledge of the underlying implementation of those mechanisms. 
 
 In the same way, the timer can be mapped to Java:
 
@@ -101,17 +101,17 @@ To orchestrate messages and define the behavior of components, beyond the wrappi
 \item Complex Event Processing (CEP), which allows reacting to patterns in large flows of events, without explicitly defining all possible sequences of events.
 	\end{itemize}
 
-The combination of those four paradigms enables service developers to express advanced behaviour, which can efficiently tame large flows and data and process them to infer relevant information, as illustrated in Figure~\ref{fig:fig1}. A typical use-case is to use imperative programming to write drivers interacting with the physical world (sensors, actuators) or 3rd party software systems. As existing programmatic imperative APIs already exist, they can easily be integrated with the imperative approach. 
+The combination of those four paradigms enables service developers to express advanced behavior, which can efficiently tame large flows and data and process them to infer relevant information, as illustrated in Figure~\ref{fig:fig1}. A typical use-case is to use imperative programming to write drivers interacting with the physical world (sensors, actuators) or 3rd party software systems. As existing programmatic imperative APIs already exist, they can easily be integrated with the imperative approach. 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\linewidth]{figures/fig1}
-\caption[ThingML CEP Overview]{ThingML CEP Overview}
+\includegraphics[width=0.7\linewidth]{figures/fig1}
+\caption[Event Processing]{Event Processing}
 \label{fig:fig1}
 \end{figure}
 
 
-As sensors might generate a large amount of data, a CEP layer close to the sensors enables service designers to express rules able to handle those data and to extract some relevant information (e.g. alert, status). The ECA paradigm is then particularly suited to handle alerts as they enable to enact some reflex-like actions (similarly to the way the spine "shortcuts" the brain to enact a fast movement e.g., when one burns his finger). Finally, composite state machines enable to describe advanced behaviour, orchestrating and adapting to a set of events coming from the CEP. 
+As sensors might generate a large amount of data, a CEP layer close to the sensors enables service designers to express rules able to handle those data and to extract some relevant information (e.g. alert, status). The ECA paradigm is then particularly suited to handle alerts as they enable to enact some reflex-like actions (similarly to the way the spine "shortcuts" the brain to enact a fast movement e.g., when one burns his finger). Finally, composite state machines enable to describe advanced behavior, orchestrating and adapting to a set of events coming from the CEP. 
 
 The HEADS Design Language is conceptually a usable sub-set of the UML (Composite Statecharts and Component Diagrams) with a syntactical notation rather than a graphical notation, so that it remains closer what programmers already know. In addition to the introduction of CEP in state machines, a key difference with UML is that our language comes with a first class action language so that models are not polluted with so-called "Opaque Behavior" (basically a String where code from the target language is directly outputted). This action language is basically the common subset of what is found in most languages, including numerical and Boolean algebra, control structures, functions, variable declaration and assignments, etc. The only action that is not typically found in programming language is the ability to asynchronously send a message through a port (rather than a simple method call). 
 
@@ -132,7 +132,7 @@ This CEP stream illustrate most of the concepts currently integrated. It perform
 
 \subsection{HEADS Transformation Framework}
 
-The HEADS Transformation Framework is responsible for "compiling"1  HEADS Design Models into source code for a large variety of languages. Rather than implementing one monolithic compiler for each language we target, the HEADS Transformation Framework instead is architected as a modular object-oriented framework. This framework promotes reuse of code among different compilers. A total of 8 formal extension points (see Figure XXX) have been identified in the HEADS code generation framework in order to allow the developer to easily and efficiently customizing some parts of the code generation while reusing the rest. 
+The HEADS Transformation Framework is responsible for "compiling"1  HEADS Design Models into source code for a large variety of languages. Rather than implementing one monolithic compiler for each language we target, the HEADS Transformation Framework instead is architected as a modular object-oriented framework. This framework promotes reuse of code among different compilers. A total of 8 formal extension points have been identified in the HEADS code generation framework in order to allow the developer to easily and efficiently customizing some parts of the code generation while reusing the rest. 
 
 \subsubsection{Role of the extension points}
 
@@ -170,12 +170,9 @@ The following code for example generates a Java interfaces that any Java program
 
 \begin{lstlisting}[language=Java]
 for (Port p : thing.allPorts()) { 
-  final StringBuilder builder = ctx.getNewBuilder(src + "/api/I" +    
-  ctx.firstToUpper(thing.getName()) + "_" + p.getName() + ".java"); 
-  builder.append("package " + pack + ".api;\n\n"); 
-  builder.append("import " + pack + ".api.*;\n\n"); 
+  StringBuilder builder = ctx.getNewBuilder(thing.getName() + "_" + p.getName() + ".java"); 
   builder.append("public interface " + "I" +  
-  ctx.firstToUpper(thing.getName()) + "_" + p.getName() + "{\n"); 
+  thing.getName() + "_" + p.getName() + "{\n"); 
   for (Message m : p.getReceives()) { 
     builder.append("void " + m.getName() + "_via_" + p.getName() + "("); 
     generateParameter(m, builder, ctx); 
