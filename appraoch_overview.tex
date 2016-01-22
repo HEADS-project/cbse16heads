@@ -79,7 +79,6 @@ In the same way, the timer can be mapped to Java:
 
 \begin{lstlisting}
 object JThread @java_type "Thread" 
-
 property timer : JThread 
 
 function start(delay : Integer) do  
@@ -106,7 +105,7 @@ The combination of those four paradigms enables service developers to express ad
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=1\linewidth]{figures/fig1}
+\includegraphics[width=0.8\linewidth]{figures/fig1}
 \caption[ThingML CEP Overview]{ThingML CEP Overview}
 \label{fig:fig1}
 \end{figure}
@@ -190,15 +189,11 @@ For example, for the Java timer component, this would generate this simple API:
 
 
 \begin{lstlisting}
-package org.thingml.generated.api; 
-
-import org.thingml.generated.api.*; 
-
 public interface ITimerJava_timer{ 
 	void start_via_timer(short delay); 
 	void cancel_via_timer(); 
 }
-	\end{lstlisting}
+\end{lstlisting}
 
 \paragraph{Main and Build}
 
@@ -206,7 +201,7 @@ These two extension points are responsible for providing users with a turn-key s
 
 \begin{lstlisting}[language=bash]
 mvn install exec:java #for Java 
-npm install && node main.js #for JavaScript (Node.JS)
+npm install && node main.js #for JavaScript
 make && ./myProgram #for C 
 \end{lstlisting}
 
@@ -246,7 +241,7 @@ By default, the HEADS transformation framework generates standalone code that ca
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=1\linewidth]{figures/fig2}
+	\includegraphics[width=0.8\linewidth]{figures/fig2}
 	\caption[Heads implementation and deploy units integration]{Heads implementation and deploy units integration}
 	\label{fig:fig2}
 \end{figure}

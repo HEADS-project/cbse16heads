@@ -7,7 +7,7 @@ The overall architecture of the eHealth system is depicted in Figure~\ref{fig:fi
 
 \begin{figure*}[!t]
 	\centering
-	\includegraphics[width=0.8\linewidth]{figures/fig3}
+	\includegraphics[width=0.7\linewidth]{figures/fig3}
 	\caption{Safe@Home system architecture}
 	\label{fig:fig3}
 \end{figure*}
@@ -28,7 +28,7 @@ For example, the PIC associated to the BLE component describes the following mes
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=0.5\linewidth]{figures/fig4}
+	\includegraphics[width=0.25\linewidth]{figures/fig4}
 	\caption{Component diagram of BLE and Decoder}
 	\label{fig:fig4}
 \end{figure}
@@ -37,8 +37,8 @@ Overall, the Field Node is implemented with ~300 LoC for the PICs and ~1100 LoC 
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.6\linewidth]{figures/fig5}
-	\caption{Field-Node component structure and EADS deployment of Field-Node seen in Heads deployment model editor}
+	\includegraphics[width=0.75\linewidth]{figures/fig5-b}
+	\caption{Field-Node component structure and HEADS deployment of Field-Node seen in Heads deployment model editor}
 	\label{fig:fig5}
 \end{figure}
 
@@ -54,7 +54,7 @@ All the field node are described by 3 scripts. The first one is a root script ba
 \end{figure}
 
 The second one is a script that will be executed whenever the field node connects to the network. This script adds a few components and connectors so that the field node can execute its logic and connect to the gateway via MQTT. This script is shown in Figure \ref{fig:fig7}. 
-Finally, the third script simply remove the whole FieldNode from the model when the field node disappears from the network. Using those three scripts, the model and the running system are always in sync. Only field nodes that are actually connected to the network will appear in the model. For example Figure \ref{fig:fig8} shows the configuration of the running system after two field nodes have connected. 
+Finally, the third script simply remove the whole FieldNode from the model when the field node disappears from the network. Using those three scripts, the model and the running system are always in sync. Only field nodes that are actually connected to the network will appear in the model.% For example Figure \ref{fig:fig8} shows the configuration of the running system after two field nodes have connected. 
 
 \begin{figure}[h]
 	\centering
@@ -64,12 +64,12 @@ Finally, the third script simply remove the whole FieldNode from the model when 
 \end{figure}
 
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=1\linewidth]{figures/fig8}
-	\caption{onConnect fragment of Home-GW inHEADS deployment model}
-	\label{fig:fig8}
-\end{figure}
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[width=1\linewidth]{figures/fig8}
+%	\caption{onConnect fragment of Home-GW inHEADS deployment model}
+%	\label{fig:fig8}
+%\end{figure}
 
 \subsection{Summary}
 The eHealth service implemented by the TellU company involves are rather heterogeneous infrastructure composed of X86, ARM, MIPS and AVR nodes, ranging from 1GHz CPU with 1GB RAM down to 16MHz microcontroller with 2.5 KB RAM. All the code generated for this service (in JavaScript for the larger nodes and C for the smaller nodes) worked out of the box, without any manual modifications. All the libraries TellU needed to use (to interact with Z-Wave, BlueTooth, GPIO on the Intel Edison, etc or to communicate over MQTT) could be integrated with no major issues, either in the HEADS Modelling Language, or directly in the target language as a HEADS component.  
