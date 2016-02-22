@@ -1,4 +1,4 @@
-\section{HEADS: A Generative Middleware Appoach for the Development of HD Services}
+\section{HEADS: A Generative Middleware Approach for the Development of HD Services}
 
 Rather than providing yet another programming language supposedly able to address all the concerns needed for HD services, the HEADS approach proposes to rely on abstractions on top of existing programming languages to: 
 \begin{itemize}
@@ -19,7 +19,7 @@ The HEADS Design Language and Transformation Framework are available as an open-
 
 \subsection{HEADS Design Language}
 
-The ambition of the HEADS design language is to support the implementation and integration of the different parts of HD-services, including the integration of legacy and of-the-shelf components and libraries. The HEADS approach has a cost that comes as a consequence of this flexibility. At a certain abstraction level, all components interfaces need to be described in terms of the HEADS modeling language in order to allow for their integration in the system. However, it is important for any existing platform, library, framework or middleware to be usable without re-inventing, re-modeling or re-implementing it. In the design of the HEADS approach and code generation framework, a special attention is put to avoid introducing any accidental overhead beyond what is strictly necessary for the integration of the implementation artefacts. 
+The ambition of the HEADS design language is to support the implementation and integration of the different parts of HD-services, including the integration of legacy and of-the-shelf components and libraries. The HEADS approach has a cost that comes as a consequence of this flexibility. At a certain abstraction level, all components interfaces need to be described in terms of the HEADS modeling language in order to allow for their integration in the system. However, it is important for any existing platform, library, framework or middleware to be usable without re-inventing, re-modeling or re-implementing it. In the design of the HEADS approach and code generation framework, a special attention is put to avoid introducing any accidental overhead beyond what is strictly necessary for the integration of the implementation artifacts. 
 
 For the components developed from scratch or for which the target runtime environment might change, the HEADS design language provides with all the required expressiveness to fully specify the behavior of a component in a platform independent way. Different code generators can then be used to produce code for different platforms (currently Java, JavaScript and C/C++). This is similar to typical Model-Driven Engineering platform-independent models with a set of code generators (or compilers) for different platforms. At the other end of the spectrum, for the integration of an existing component, the HEADS approach allow modeling only the required part of interface of the component and mapping to its public platform specific API. 
 
@@ -48,7 +48,7 @@ thing fragment Timer includes TimerMsgs {
 \end{lstlisting}
 
 
-Note that ports are bi-directional as they can both send and receive message. Our notion of port should be understood as an atomic service, which is either provided or required. The service itself typically requires exchanging a set of message, typically a request (like start) and a response (like timeout). 
+Note that ports are bi-directional as they can both send and receive message. Our notion of port should be understood as an atomic service, which is either provided or required. The service itself typically requires exchanging a set of message, typically a request (like \texttt{start}) and a response (like \texttt{timeout}). 
 
 \subsubsection{Wrapping existing libraries}
 A timer component is typically useful in any language. The API we have just defined in fully platform-independent, as it contains no Java, JavaScript or C/C++. As all those languages already providing native timing facilities, we simply need to wrap those facilities into platform-specific components.  
@@ -75,7 +75,7 @@ thing TimerJS includes Timer {
 } 
 \end{lstlisting}
 
-Basically, anytime a start message is received on the timer port, we first check that the delay is positive. If so, we call the start function, which is a simple wrapper around the native setTimeout function provided in JavaScript. Native code i.e. code that is directly expressed in the target language (here JavaScript) should be written between simple quotes. Native code can be interleaved with actions and expression of the HEADS Modeling Language. This way, the developer does not need to know how the generated code will look like to be able to wrap her library. No matter if the delay variable is renamed in the generated e.g. to avoid name conflict or if the action of sending the timeout actually implemented in a generated function called sendtimeoutOnTimer. She just can simply refer to the delay variable and send a message with no knowledge of the underlying implementation of those mechanisms. 
+Basically, anytime a start message is received on the timer port, we first check that the delay is positive. If so, we call the start function, which is a simple wrapper around the native \texttt{setTimeout} function provided in JavaScript. Native code {\em i.e.} code that is directly expressed in the target language (here JavaScript) should be written between simple quotes. Native code can be interleaved with actions and expression of the HEADS Modeling Language. This way, the developer does not need to know how the generated code will look like to be able to wrap her library. No matter if the delay variable is renamed in the generated e.g. to avoid name conflict or if the action of sending the timeout actually implemented in a generated function called \texttt{sendtimeoutOnTimer}. She just can simply refer to the delay variable and send a message with no knowledge of the underlying implementation of those mechanisms. 
 
 In the same way, the timer can be mapped to Java:
 
@@ -97,7 +97,7 @@ end
 
 To orchestrate messages and define the behavior of components, beyond the wrapping of existing libraries of components, the HEADS Design Language provides a set of facilities: 
 \begin{itemize}
-\item Imperative programming to implement simple procedures, either directly using the actions and expression languages provided by the HEADS Modelling Language or by using the features of the target languages (or a mix of both) 
+\item Imperative programming to implement simple procedures, either directly using the actions and expression languages provided by the HEADS Modeling Language or by using the features of the target languages (or a mix of both) 
 \item Event-Condition-Action (ECA) rules, which basically allows reacting to incoming events, independently from any state e.g. unconditionally shut down the system if emergency button has been pressed.  
 \item Composite State Machine, also including parallel regions, which allows reacting to a sequence of incoming events e.g. to make sure all drivers are initialized in the proper order before accepting any other command 
 \item Complex Event Processing (CEP), which allows reacting to patterns in large flows of events, without explicitly defining all possible sequences of events.
@@ -119,22 +119,22 @@ The HEADS Design Language is conceptually a usable sub-set of the UML (Composite
 
 ECA rules are basically internal transitions, as in the JavaScript timer. Those rules basically react on an event and can be optionally guarded with any boolean expression, e.g. involving properties of the component and/or parameters of the message. Any action can then be triggered, either fully expressed at a platform-independent level or mixed with the target language (as in the JavaScript timer). As for the state machine, we support all the concepts present in the UML, including composite states and concurrent regions.  
 
-The CEP concepts currently included in the HEADS Modelling Language is a sub-set of the concepts of ReactiveX (or other CEP language such a EPL available in Esper). We provide support for joining and merging flows of events, time or length windows and arbitrary filters.  
+The CEP concepts currently included in the HEADS Modeling Language is a sub-set of the concepts of ReactiveX (or other CEP language such a EPL available in Esper). We provide support for joining and merging flows of events, time or length windows and arbitrary filters.  
 
 \begin{lstlisting}
 stream lengthW 
-  from e : [weather1?temp | weather2?temp]::filter(inRange(e))::timeWindow(1000*60, 1000*60)  
+  from e : [weather1?temp | weather2?temp]::keep if inRange(e)::during 1000*60 by 1000*60
   select avg : average(e.t[]),  
          min : min(e.t[]),  
          max : max(e.t[])  
 action report!temp(avg, min, max)
 \end{lstlisting}
 
-This CEP stream illustrate most of the concepts currently integrated. It performs a merge between two temperature sensors (connected on ports weather1 and weather2). Basically, all temperature measurements coming from both sensor will be piped in a new stream. All these measurements are then filtered using a custom inRange operator defined by the developer, which will discard values that are outside a range and which are most likely due to an erroneous measurement rather than a correct measurement being too cold or too warn. The merging and the filtering happens on a time window of one minute (first parameter of timeWindow) which progress by slices of one minutes (second parameter). While such kind of CEP query could be implemented directly in Java, JavaScript or C, or at a more abstract level using the HEADS Modelling Language (state machine), it alleviates in any case the developer from writing a lot of "plumbing code" (timers, buffers, etc), which if not implemented correctly can have dramatic impact on memory and performances.
+This CEP stream illustrate most of the concepts currently integrated. It performs a merge between two temperature sensors (connected on ports weather1 and weather2). Basically, all temperature measurements coming from both sensor will be piped in a new stream. All these measurements are then filtered using a custom \texttt{inRange} operator defined by the developer, which will discard values that are outside a range and which are most likely due to an erroneous measurement rather than a correct measurement being too cold or too warn. The merging and the filtering happens on a time window during one minute which progress by slices of one minute. While such kind of CEP query could be implemented directly in Java, JavaScript or C, or at a more abstract level using the HEADS Modeling Language (state machine), it alleviates in any case the developer from writing a lot of "plumbing code" (timers, buffers, etc), which if not implemented correctly can have dramatic impact on memory and performances.
 
 \subsection{HEADS Transformation Framework}
 
-The HEADS Transformation Framework is responsible for "compiling"1  HEADS Design Models into source code for a large variety of languages. Rather than implementing one monolithic compiler for each language we target, the HEADS Transformation Framework instead is architected as a modular object-oriented framework. This framework promotes reuse of code among different compilers. A total of 8 formal extension points have been identified in the HEADS code generation framework in order to allow the developer to easily and efficiently customizing some parts of the code generation while reusing the rest. 
+The HEADS Transformation Framework is responsible for ``compiling''  HEADS Design Models into source code for a large variety of languages. Rather than implementing one monolithic compiler for each language we target, the HEADS Transformation Framework instead is architected as a modular object-oriented framework. This framework promotes reuse of code among different compilers. A total of 8 formal extension points have been identified in the HEADS code generation framework in order to allow the developer to easily and efficiently customizing some parts of the code generation while reusing the rest. 
 
 \subsubsection{Role of the extension points}
 
@@ -208,7 +208,7 @@ This extension point makes it easy to for example switch from Maven to Gradle fo
 
 \paragraph{Message Queing, Scheduling and Dispatching}
 
-Those extension points are related to the internal management of messages within a node. By default, messages are enqueued in a FIFO, typically reusing already structures. On some very constrained platforms (microcontrollers) the code for the FIFO also needs to be generated as the standard library is typically more limited.For the scheduling and dispatching of messages we typically rely on facilities available on the OS (threads) to ensure a fair distribution of messages among components and avoid starvation and race conditions. Again, on very constrained platforms that are too limited to run an OS, custom schedulers should be generated.
+Those extension points are related to the internal management of messages within a node. By default, messages are queued in a FIFO, typically reusing already structures. On some very constrained platforms (microcontrollers) the code for the FIFO also needs to be generated as the standard library is typically more limited.For the scheduling and dispatching of messages we typically rely on facilities available on the OS (threads) to ensure a fair distribution of messages among components and avoid starvation and race conditions. Again, on very constrained platforms that are too limited to run an OS, custom schedulers should be generated.
 
 \paragraph{Connectors}
 
@@ -218,19 +218,19 @@ This extension point is concerned with the serialization and transport of messag
 While the HEADS Transformation Framework can be seen as a family of compilers (producing code in Java, JavaScript and C/C++), those compilers have a different nature than a compiler like GCC, producing machine code out of C source code. Working at a higher level of abstraction, by transforming a model into source code rather than source code into machine code, drastically reduced the cost of writing a HEADS compiler. While GCC alone is about 14 millions LoC, the whole HEADS Transformation Framework, also including the compilers targeting Java, JavaScript and C/C++ is less than 25,000 LoC (560 times less). Those LoC are distributed (approx.) as follows:
 
 \begin{itemize}
-\item 6000 LoC in the framework itself, that all compilers reuse. This includes facilities to manage files, generate consistent variable names, etc. It also includes the code for compiling most of the actions and expressions (26 out of 35) of the HEADS Design Language. New compiler (e.g. targeting Go, Lua, PHP) will benefit from those 6000 LoC, unless the targeted language is radically different, for example if it uses a Polish notation like Lisp where "a + b" is expressed as "+ a b". 
+\item 6000 LoC in the framework itself, that all compilers reuse. This includes facilities to manage files, generate consistent variable names, etc. It also includes the code for compiling most of the actions and expressions (26 out of 35) of the HEADS Design Language. New compiler ({\em e.g.} targeting Go, Lua, PHP) will benefit from those 6000 LoC, unless the targeted language is radically different, for example if it uses a Polish notation like Lisp where "a + b" is expressed as "+ a b". 
 \item 3000 LoC for the Java compiler that is able to generate fully working Java code. The generated code targets a framework for the execution of the state machines and another for the execution of CEP streams, hence most of the "tricky" code does not need to be generated as it is handled directly in those frameworks. In addition, 400 lines of code are needed to generate wrappers able to "merge" fine-grained implementation components into coarser-grained deployment components (as explained in the next sub-section) 
 \item 3000 LoC for the JavaScript, which strictly follow the same approach as for the Java compiler. About 400 LoC are also needed to perform the wrapping. 
 \item 11000 LoC for the family of C compilers, distributed (approx.) as follows: 
 \begin{itemize}
 
 \item 5000 for a generic C transformation framework shared by all C compilers 
-\item 6000 LoC shared among a POSIX compiler for Linux, an AVR 8-bit compiler (e.g. for Arduino) and an ARM 32-bit compiler (e.g. for Cypress PSoC5).
+\item 6000 LoC shared among a POSIX compiler for Linux, an AVR 8-bit compiler ({\em e.g.} for Arduino) and an ARM 32-bit compiler ({\em e.g.} for Cypress PSoC5).
 \end{itemize}
 \end{itemize}
 
 Basically, supporting a new high-level language (like Java) with available libraries for state machines and CEP and having an infix (standard) notation should in most cases be limited to writing about 3000 LoC. Redifining the compilation of actions and expressions to support Polish (prefix) or postfix notation should be about 500 additional LoC. 
-Supporting a lower-level language (like C) where libraries are not available (or do not provide enough control on the memory to be allocated, etc) is a slightly more complex endeavor, but still accessible to most programmers. Writing the POSIX C compiler for Linux was about 7000 LoC (as the code for execution of the state machine needs to be generated, etc), including the generic C transformation framework. However, supporting different "dialects" of C required about 2000 LoC for AVR 8-bit and 2000 LoC for ARM 32-bit, which is a limited effort. 
+Supporting a lower-level language (like C) where libraries are not available (or do not provide enough control on the memory to be allocated, etc) is a slightly more complex endeavor, but still accessible to most programmers. Writing the POSIX C compiler for Linux was about 7000 LoC (as the code for execution of the state machine needs to be generated, etc), including the generic C transformation framework. However, supporting different ``dialects'' of C required about 2000 LoC for AVR 8-bit and 2000 LoC for ARM 32-bit, which is a limited effort. 
 
 
 \subsection{HEADS Deployment Language and Runtime platform}
